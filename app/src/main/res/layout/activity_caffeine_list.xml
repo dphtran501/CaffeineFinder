@@ -12,10 +12,18 @@
     tools:context="edu.orangecoastcollege.cs273.caffeinefinder.CaffeineListActivity"
     android:orientation="vertical">
 
+    <fragment
+        android:id="@+id/caffeineMapFragment"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
     <ListView
         android:id="@+id/locationsListView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="0dp"
+        android:layout_weight="2">
 
     </ListView>
 </LinearLayout>

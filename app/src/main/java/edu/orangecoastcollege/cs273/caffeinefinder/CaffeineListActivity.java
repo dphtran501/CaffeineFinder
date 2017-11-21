@@ -4,12 +4,16 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ListView;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+
 import java.util.List;
 
 //TODO: (1) Implement the OnMapReadCallback interface for Google Maps
 //TODO: First, you'll need to compile GoogleMaps in build.gradle
 //TODO: and add permissions and your Google Maps API key in the AndroidManifest.xml
-public class CaffeineListActivity extends AppCompatActivity {
+public class CaffeineListActivity extends AppCompatActivity implements OnMapReadyCallback{
 
     private DBHelper db;
     private List<Location> allLocationsList;
@@ -31,6 +35,16 @@ public class CaffeineListActivity extends AppCompatActivity {
         locationsListView.setAdapter(locationListAdapter);
 
         //TODO: (2) Load the support map fragment asynchronously
+        // Instruct android to load a Google Map into our fragment (caffeineMapFragment)
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.caffeineMapFragment);
+        mapFragment.getMapAsync(this);
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap)
+    {
+        // This method is called AFTER the map is loaded from Google Play services
+        // At this point the map is ready
     }
 
     // TODO: (3) Implement the onMapReady method, which will add a special "marker" for our current location,
