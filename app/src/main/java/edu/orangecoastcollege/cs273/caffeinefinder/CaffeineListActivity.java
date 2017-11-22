@@ -2,11 +2,18 @@ package edu.orangecoastcollege.cs273.caffeinefinder;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.ListView;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
 
@@ -19,6 +26,7 @@ public class CaffeineListActivity extends AppCompatActivity implements OnMapRead
     private List<Location> allLocationsList;
     private ListView locationsListView;
     private LocationListAdapter locationListAdapter;
+    private GoogleMap mMap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +53,38 @@ public class CaffeineListActivity extends AppCompatActivity implements OnMapRead
     {
         // This method is called AFTER the map is loaded from Google Play services
         // At this point the map is ready
+
+        // Store the reference to the Google Map in our member variable
+        mMap = googleMap;
+        // Custom marker (Big Blue one - mymarker.png)
+        LatLng myPosition = new LatLng(33.671028, -117.911305);
+
+        // Add a custom marker at "myPosition"
+        mMap.addMarker(new MarkerOptions()
+                .position(myPosition).title("My Location")
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.my_marker)));
+
+        // Center the camera over myPosition
+        CameraPosition cameraPosition = new CameraPosition.Builder()
+                .target(myPosition)
+                .zoom(15.0f)
+                .build();
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
+        // Move map to our cameraUpdate
+        mMap.moveCamera(cameraUpdate);
+
+        // Now, let's plot each Location form the list with a standard marker
+        for (Location location : allLocationsList)
+        {
+            LatLng caffeineLocation = new LatLng(location.getLatitude(), location.getLongitude());
+            mMap.addMarker(new MarkerOptions().position(caffeineLocation).title(location.getName()));
+        }
+
+    }
+
+    public void viewLocationDetails(View v)
+    {
+
     }
 
     // TODO: (3) Implement the onMapReady method, which will add a special "marker" for our current location,
