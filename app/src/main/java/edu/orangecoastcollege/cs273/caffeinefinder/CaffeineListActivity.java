@@ -1,8 +1,11 @@
 package edu.orangecoastcollege.cs273.caffeinefinder;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.google.android.gms.maps.CameraUpdate;
@@ -82,9 +85,23 @@ public class CaffeineListActivity extends AppCompatActivity implements OnMapRead
 
     }
 
+    /**
+     * Launches <code>CaffeineDetailsActivity</code> showing information about the <code>Location</code>
+     * object that was clicked in the ListView.
+     *
+     * @param v The view that called this method.
+     */
     public void viewLocationDetails(View v)
     {
-
+        if (v instanceof LinearLayout)
+        {
+            LinearLayout selectedLayout = (LinearLayout) v;
+            Location selectedLocation = (Location) selectedLayout.getTag();
+            Log.i("CaffeineListActivity", selectedLocation.toString());
+            Intent detailsIntent = new Intent(this, CaffeineDetailsActivity.class);
+            detailsIntent.putExtra("SelectedLocation", selectedLocation);
+            startActivity(detailsIntent);
+        }
     }
 
     // TODO: (3) Implement the onMapReady method, which will add a special "marker" for our current location,
