@@ -12,7 +12,7 @@
     android:orientation="vertical">
 
     <fragment
-        android:id="@+id/caffeineMapFragment"
+        android:id="@+id/detailsCaffeineMapFragment"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -36,12 +36,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:text="Address"/>
-
-        <TextView
-            android:id="@+id/detailsAddress2TextView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="Address2"/>
 
         <TextView
             android:id="@+id/detailsPhoneTextView"
