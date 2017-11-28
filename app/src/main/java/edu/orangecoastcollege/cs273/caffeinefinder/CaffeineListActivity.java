@@ -20,10 +20,20 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
 
-//TODO: (1) Implement the OnMapReadCallback interface for Google Maps
-//TODO: First, you'll need to compile GoogleMaps in build.gradle
-//TODO: and add permissions and your Google Maps API key in the AndroidManifest.xml
-public class CaffeineListActivity extends AppCompatActivity implements OnMapReadyCallback{
+// (1) Implement the OnMapReadCallback interface for Google Maps
+// First, you'll need to compile GoogleMaps in build.gradle
+// and add permissions and your Google Maps API key in the AndroidManifest.xml
+
+/**
+ * This activity displays a list of coffee shops in the local area along with a Google Map image
+ * of the locations of each of those coffee shops.
+ *
+ * @author Derek Tran
+ * @version 1.0
+ * @since November 21, 2017
+ */
+public class CaffeineListActivity extends AppCompatActivity implements OnMapReadyCallback
+{
 
     private DBHelper db;
     private List<Location> allLocationsList;
@@ -31,8 +41,16 @@ public class CaffeineListActivity extends AppCompatActivity implements OnMapRead
     private LocationListAdapter locationListAdapter;
     private GoogleMap mMap;
 
+    /**
+     * Initializes <code>CaffeineListActivity</code> by inflating its UI.
+     *
+     * @param savedInstanceState Bundle containing the data it recently supplied in
+     *                           onSaveInstanceState(Bundle) if activity was reinitialized after
+     *                           being previously shut down. Otherwise it is null.
+     */
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_caffeine_list);
 
@@ -45,12 +63,21 @@ public class CaffeineListActivity extends AppCompatActivity implements OnMapRead
         locationListAdapter = new LocationListAdapter(this, R.layout.location_list_item, allLocationsList);
         locationsListView.setAdapter(locationListAdapter);
 
-        //TODO: (2) Load the support map fragment asynchronously
+        // (2) Load the support map fragment asynchronously
         // Instruct android to load a Google Map into our fragment (caffeineMapFragment)
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.caffeineMapFragment);
         mapFragment.getMapAsync(this);
     }
 
+    // (3) Implement the onMapReady method, which will add a special "marker" for our current location,
+    // which is 33.671028, -117.911305  (MBCC 139)
+
+    /**
+     * Called when the map is ready to be used.
+     *
+     * @param googleMap Non-null instance of GoogleMap associated with MapFragment or MapView
+     *                  defining call back.
+     */
     @Override
     public void onMapReady(GoogleMap googleMap)
     {
@@ -63,18 +90,16 @@ public class CaffeineListActivity extends AppCompatActivity implements OnMapRead
         LatLng myPosition = new LatLng(33.671028, -117.911305);
 
         // Add a custom marker at "myPosition"
-        mMap.addMarker(new MarkerOptions()
-                .position(myPosition).title("My Location")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.my_marker)));
+        mMap.addMarker(new MarkerOptions().position(myPosition).title("My Location").icon(BitmapDescriptorFactory.fromResource(R.drawable.my_marker)));
 
         // Center the camera over myPosition
-        CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(myPosition)
-                .zoom(15.0f)
-                .build();
+        CameraPosition cameraPosition = new CameraPosition.Builder().target(myPosition).zoom(15.0f).build();
         CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
         // Move map to our cameraUpdate
         mMap.moveCamera(cameraUpdate);
+
+        // Then add normal markers for all the caffeine locations from the allLocationsList.
+        // Set the zoom level of the map to 15.0f
 
         // Now, let's plot each Location form the list with a standard marker
         for (Location location : allLocationsList)
@@ -84,6 +109,9 @@ public class CaffeineListActivity extends AppCompatActivity implements OnMapRead
         }
 
     }
+
+    // (4) Create a viewLocationsDetails(View v) method to create a new Intent to the
+    // CaffeineDetailsActivity class, sending it the selectedLocation the user picked from the locationsListView
 
     /**
      * Launches <code>CaffeineDetailsActivity</code> showing information about the <code>Location</code>
@@ -104,12 +132,4 @@ public class CaffeineListActivity extends AppCompatActivity implements OnMapRead
         }
     }
 
-    // TODO: (3) Implement the onMapReady method, which will add a special "marker" for our current location,
-    // TODO: which is 33.671028, -117.911305  (MBCC 139)
-    // TODO: Then add normal markers for all the caffeine locations from the allLocationsList.
-    // TODO: Set the zoom level of the map to 15.0f
-
-
-    // TODO: (4) Create a viewLocationsDetails(View v) method to create a new Intent to the
-    // TODO: CaffeineDetailsActivity class, sending it the selectedLocation the user picked from the locationsListView
 }

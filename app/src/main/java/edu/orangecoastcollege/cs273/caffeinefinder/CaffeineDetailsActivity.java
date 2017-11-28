@@ -13,11 +13,26 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+/**
+ * This activity displays the details about a coffee shop that was selected in
+ * <code>CaffeineListActivity</code>, along with a Google Map image showing its location.
+ *
+ * @author Derek Tran
+ * @version 1.0
+ * @since November 21, 2017
+ */
 public class CaffeineDetailsActivity extends AppCompatActivity implements OnMapReadyCallback
 {
     private GoogleMap mMap;
     private Location selectedLocation;
 
+    /**
+     * Initializes <code>CaffeineDetailsActivity</code> by inflating its UI.
+     *
+     * @param savedInstanceState Bundle containing the data it recently supplied in
+     *                           onSaveInstanceState(Bundle) if activity was reinitialized after
+     *                           being previously shut down. Otherwise it is null.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -40,6 +55,12 @@ public class CaffeineDetailsActivity extends AppCompatActivity implements OnMapR
         mapFragment.getMapAsync(this);
     }
 
+    /**
+     * Called when the map is ready to be used.
+     *
+     * @param googleMap Non-null instance of GoogleMap associated with MapFragment or MapView
+     *                  defining call back.
+     */
     @Override
     public void onMapReady(GoogleMap googleMap)
     {
@@ -52,14 +73,10 @@ public class CaffeineDetailsActivity extends AppCompatActivity implements OnMapR
         LatLng myPosition = new LatLng(selectedLocation.getLatitude(), selectedLocation.getLongitude());
 
         // Add a custom marker at "myPosition"
-        mMap.addMarker(new MarkerOptions()
-                .position(myPosition).title(selectedLocation.getName()));
+        mMap.addMarker(new MarkerOptions().position(myPosition).title(selectedLocation.getName()));
 
         // Center the camera over myPosition
-        CameraPosition cameraPosition = new CameraPosition.Builder()
-                .target(myPosition)
-                .zoom(15.0f)
-                .build();
+        CameraPosition cameraPosition = new CameraPosition.Builder().target(myPosition).zoom(15.0f).build();
         CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
         // Move map to our cameraUpdate
         mMap.moveCamera(cameraUpdate);
